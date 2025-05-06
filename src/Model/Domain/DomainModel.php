@@ -37,7 +37,7 @@ final readonly class DomainModel extends DatabaseModel {
                         D.id,
                         D.name,
                         D.code
-                    FROM 
+                    FROM
                         domain D
                 SELECT_QUERY;
 

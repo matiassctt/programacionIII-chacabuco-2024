@@ -7,7 +7,7 @@ readonly class ViewController {
 	public function __construct(
 		private string $view
 	) {
-	}	
+	}
 	
 	public function call(mixed $data): void
 	{

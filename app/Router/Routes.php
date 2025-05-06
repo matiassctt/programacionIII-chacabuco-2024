@@ -8,7 +8,8 @@ function startRouter(): Router
     $routes = [];
 
     include_once "Routes/DomainRoutes.php";
-    $routes = array_merge($routes, DomainRoutes::getRoutes());
+    include_once "Routes/RecordRoutes.php";
+    $routes = array_merge($routes, DomainRoutes::getRoutes(), RecordRoutes::getRoutes());
 
     $routesClass = [];
     foreach ($routes as $route) {
