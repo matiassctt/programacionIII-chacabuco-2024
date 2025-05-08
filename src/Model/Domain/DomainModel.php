@@ -15,7 +15,7 @@ final readonly class DomainModel extends DatabaseModel {
                         D.name,
                         D.code
                     FROM
-                        domain D
+                        domains D
                     WHERE
                         D.id = :id
                 SELECT_QUERY;
@@ -38,7 +38,7 @@ final readonly class DomainModel extends DatabaseModel {
                         D.name,
                         D.code
                     FROM 
-                        domain D
+                        domains D
                 SELECT_QUERY;
 
         $primitiveResults = $this->primitiveQuery($query);
