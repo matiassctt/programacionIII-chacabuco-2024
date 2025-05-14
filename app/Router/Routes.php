@@ -10,6 +10,9 @@ function startRouter(): Router
     include_once "Routes/DomainRoutes.php";
     $routes = array_merge($routes, DomainRoutes::getRoutes());
 
+    include_once "Routes/EntertainmentRoutes.php";
+    $routes = array_merge($routes, EntertainmentRoutes::getRoutes());
+
     $routesClass = [];
     foreach ($routes as $route) {
         $routesClass[] = Route::fromArray($route);

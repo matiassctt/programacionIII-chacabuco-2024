@@ -139,3 +139,4 @@ AH00558: apache2: Could not reliably determine the server's fully qualified doma
 [Tue Apr 29 00:19:32.873473 2025] [php:warn] [pid 19:tid 19] [client 172.18.0.1:57060] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/app/Router/Router.php:52) in /var/www/html/index.php on line 40
 [Tue Apr 29 00:19:47.770445 2025] [php:warn] [pid 20:tid 20] [client 172.18.0.1:39506] PHP Warning:  Cannot modify header information - headers already sent by (output started at /var/www/html/app/Router/Router.php:52) in /var/www/html/index.php on line 40
 [Tue Apr 29 00:23:17.907076 2025] [mpm_prefork:notice] [pid 1:tid 1] AH00170: caught SIGWINCH, shutting down gracefully
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.19.0.4. Set the 'ServerName' directive globally to suppress this message
