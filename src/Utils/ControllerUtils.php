@@ -25,7 +25,7 @@ final readonly class ControllerUtils {
         $json = file_get_contents('php://input');
         
         if (empty($json)) {
-            return [];
+            return $_POST;
         }
         
         $postData = json_decode($json, true);

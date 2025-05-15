@@ -2,16 +2,33 @@
 
 namespace Src\Entity\Domain;
 
-final readonly class Domain {
+final class Domain {
 
     public function __construct(
-        private int $id,
+        private readonly ?int $id,
         private string $name,
         private string $code
     ) {
     }
 
-    public function id(): int
+    public static function create(
+        string $name, 
+        string $code
+    ): self
+    {
+        return new self(null, $name, $code);
+    }
+
+    public function modify(
+        string $name,
+        string $code
+    ): void
+    {
+        $this->name = $name;
+        $this->code = $code;
+    }
+
+    public function id(): ?int
     {
         return $this->id;
     }
