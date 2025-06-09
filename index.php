@@ -24,6 +24,8 @@ spl_autoload_register(
     }
 );
 
+@session_start();
+
 // Cargamos el routeador
 $router = startRouter();
 

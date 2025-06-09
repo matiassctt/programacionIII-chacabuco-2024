@@ -1,6 +1,8 @@
 <?php
 
-readonly class ViewController {
+include_once 'SessionController.php';
+
+readonly class ViewController extends SessionController {
 
 	private const string BASE_PATH = "%s/src/Views/%s.php";
 
@@ -9,7 +11,7 @@ readonly class ViewController {
 	) {
 	}	
 	
-	public function call(mixed $data): void
+	public function call(mixed $data = []): void
 	{
 		include_once $this->getBasePath();
 	}
