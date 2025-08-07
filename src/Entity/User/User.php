@@ -2,18 +2,28 @@
 
 namespace Src\Entity\User;
 
-final readonly class User {
+use DateTime;
+
+final class User {
 
     public function __construct(
-        private int $id,
+        private readonly ?int $id,
+        private string $name,
         private string $email,
-        private string $password
+        private string $password,
+        private string $token,
+        private DateTime $tokenAuthDate
     ) {
     }
 
     public function id(): int
     {
         return $this->id;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 
     public function email(): string
@@ -24,5 +34,21 @@ final readonly class User {
     public function password(): string
     {
         return $this->password;
+    }
+
+    public function token(): string
+    {
+        return $this->token;
+    }
+
+    public function tokenAuthDate(): DateTime
+    {
+        return $this->tokenAuthDate;
+    }
+
+    public function generateToken(): void
+    {
+        $this->token = md5($this->id."-".$this->email.rand(1000, 9999).date("YmdHis"));
+        $this->tokenAuthDate = new DateTime("+1 hours");
     }
 }

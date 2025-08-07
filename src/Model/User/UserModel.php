@@ -2,26 +2,26 @@
 
 namespace Src\Model\User;
 
+use DateTime;
 use Src\Model\DatabaseModel;
 use Src\Entity\User\User;
 
 final readonly class UserModel extends DatabaseModel {
 
-    public function find(int $id): ?User
+    public function findByEmailAndPassword(string $email, string $password): ?User
     {
         $query = <<<SELECT_QUERY
                     SELECT
-                        U.id,
-                        U.email,
-                        U.password
+                        U.*
                     FROM
-                        user U
+                        users U
                     WHERE
-                        U.id = :id
+                        U.email = :email AND U.password = :password
                 SELECT_QUERY;
 
         $parameters = [
-            'id' => $id
+            'email' => $email,
+            'password' => $password
         ];
 
         $result = $this->primitiveQuery($query, $parameters);
@@ -29,31 +29,46 @@ final readonly class UserModel extends DatabaseModel {
         return $this->toUser($result[0] ?? null);
     }
 
-    public function findByEmailAndPassword(
-        string $email,
-        string $password
-    ): ?User
+    public function findByToken(string $token): ?User
     {
         $query = <<<SELECT_QUERY
                     SELECT
-                        U.id,
-                        U.email,
-                        U.password
+                        U.*
                     FROM
-                        user U
+                        users U
                     WHERE
-                        U.email = :email AND
-                        U.password = :password
+                        U.token = :token AND :date <= U.token_auth_date
                 SELECT_QUERY;
 
         $parameters = [
-            'email' => $email,
-            'password' => $password,
+            'token' => $token,
+            'date' => date("Y-m-d H:i:s")
         ];
 
         $result = $this->primitiveQuery($query, $parameters);
         
         return $this->toUser($result[0] ?? null);
+    }
+
+    public function update(User $user): void
+    {
+        $query = <<<SELECT_QUERY
+                    UPDATE
+                        users
+                    SET
+                        token = :token,
+                        token_auth_date = :date
+                    WHERE
+                        id = :id
+                SELECT_QUERY;
+
+        $parameters = [
+            'token' => $user->token(),
+            'date' => $user->tokenAuthDate()->format("Y-m-d H:i:s"),
+            'id' => $user->id()
+        ];
+
+        $this->primitiveQuery($query, $parameters);
     }
 
     private function toUser(?array $primitive): ?User
@@ -64,8 +79,11 @@ final readonly class UserModel extends DatabaseModel {
 
         return new User(
             $primitive['id'],
+            $primitive['name'],
             $primitive['email'],
-            $primitive['password']
+            $primitive['password'],
+            $primitive['token'],
+            new DateTime($primitive['token_auth_date']),
         );
     }
 }

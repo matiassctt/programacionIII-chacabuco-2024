@@ -7,7 +7,7 @@ namespace Src\Service\User;
 use Src\Model\User\UserModel;
 use Src\Entity\User\User;
 
-final readonly class UserFinderByEmailAndPasswordService {
+final readonly class UserTokenGeneratorService {
 
     private UserModel $model;
 
@@ -16,9 +16,11 @@ final readonly class UserFinderByEmailAndPasswordService {
         $this->model = new UserModel();
     }
 
-    public function find(string $email, string $password): ?User 
+    public function generate(User $user): User 
     {
-        return $this->model->findByEmailAndPassword($email, $password);
+        $user->generateToken();
+        $this->model->update($user);
+        return $user;
     }
 
 }

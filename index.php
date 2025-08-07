@@ -41,10 +41,16 @@ try {
         $_SERVER['REQUEST_METHOD']
     );
 } catch (Exception $e) {   
-    // Si la ruta no existe, devolvemos un error 404
-    header("HTTP/1.0 404 Not Found");
+    if ($e->getMessage() == "El usuario no se encuentra autorizado.") {
+        header("HTTP/1.0 401 Not Found");
+        $status = 401;
+    } else {
+        header("HTTP/1.0 404 Not Found");
+        $status = 404;        
+    }
+
     echo json_encode([
-        "status" => 404,
+        "status" => $status,
         "message"=> $e->getMessage()
     ]);
 }
