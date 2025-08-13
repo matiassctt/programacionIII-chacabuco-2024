@@ -16,17 +16,26 @@ final readonly class UserModel extends DatabaseModel {
                     FROM
                         users U
                     WHERE
-                        U.email = :email AND U.password = :password
+                        U.email = :email
                 SELECT_QUERY;
 
         $parameters = [
             'email' => $email,
-            'password' => $password
         ];
 
         $result = $this->primitiveQuery($query, $parameters);
         
-        return $this->toUser($result[0] ?? null);
+        $user = $this->toUser($result[0] ?? null); 
+
+        if ($user === null) {
+            return null;
+        }
+
+        if (password_verify($password, $user->password())) {
+            return $user;
+        }
+
+        return null;
     }
 
     public function findByToken(string $token): ?User
@@ -48,6 +57,26 @@ final readonly class UserModel extends DatabaseModel {
         $result = $this->primitiveQuery($query, $parameters);
         
         return $this->toUser($result[0] ?? null);
+    }
+
+    public function insert(User $user): void
+    {
+        $query = <<<INSERT_QUERY
+                INSERT INTO users
+                (name, email, password, token, token_auth_date)
+                VALUES
+                (:name, :email, :password, :token, :tokenAuthDate)
+                INSERT_QUERY;
+
+        $parameters = [
+            "name" => $user->name(),
+            "email" => $user->email(),
+            "password" => $user->password(),
+            "token" => $user->token(),
+            "tokenAuthDate" => $user->tokenAuthDate()?->format("Y-m-d H:i:s")
+        ];
+        
+        $this->primitiveQuery($query, $parameters);
     }
 
     public function update(User $user): void
@@ -83,7 +112,7 @@ final readonly class UserModel extends DatabaseModel {
             $primitive['email'],
             $primitive['password'],
             $primitive['token'],
-            new DateTime($primitive['token_auth_date']),
+            empty($primitive['token_auth_date']) ? null : new DateTime($primitive['token_auth_date']),
         );
     }
 }
