@@ -1,5 +1,7 @@
 <?php
 
+namespace Src\Middleware;
+
 use Src\Service\User\UserTokenValidatorService;
 
 readonly class AuthMiddleware {
@@ -11,7 +13,7 @@ readonly class AuthMiddleware {
 
 	private function validate(): void
 	{
-		$token = $_SERVER["HTTP_X_API_KEY"];
+		$token = $_SERVER["HTTP_X_API_KEY"] ?? '';
 		$this->tokenValidator->validate($token);
 	}
 }

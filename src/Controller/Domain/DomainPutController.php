@@ -1,5 +1,6 @@
 <?php 
 
+use Src\Utils\ControllerUtils;
 use Src\Service\Domain\DomainUpdaterService;
 
 final readonly class DomainPutController {
@@ -11,12 +12,9 @@ final readonly class DomainPutController {
 
     public function start(int $id): void 
     {
-        $name = $_POST["name"];
-        $code = $_POST["code"];
+        $name = ControllerUtils::getPost("name");
+        $code = ControllerUtils::getPost("code");
 
         $this->service->update($name, $code, $id);
-
-        header("Location: /domains");
-        die();
     }
 }

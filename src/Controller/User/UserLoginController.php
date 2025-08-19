@@ -1,5 +1,6 @@
 <?php 
 
+use Src\Utils\ControllerUtils;
 use Src\Service\User\UserLoginService;
 
 final readonly class UserLoginController {
@@ -11,8 +12,8 @@ final readonly class UserLoginController {
 
     public function start(): void 
     {
-        $email = $_POST["email"] ?? "";
-        $password = $_POST["password"] ?? "";
+        $email = ControllerUtils::getPost("email");
+        $password = ControllerUtils::getPost("password");
         
         $user = $this->service->login($email, $password);
      

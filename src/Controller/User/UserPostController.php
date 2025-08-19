@@ -1,5 +1,6 @@
 <?php 
 
+use src\Utils\ControllerUtils;
 use Src\Service\User\UserCreatorService;
 
 final readonly class UserPostController {
@@ -11,9 +12,9 @@ final readonly class UserPostController {
 
     public function start(): void 
     {
-        $name = $_POST["name"];
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+        $name = ControllerUtils::getPost("name");
+        $email = ControllerUtils::getPost("email");
+        $password = ControllerUtils::getPost("password");
 
         $this->service->create($name, $email, $password);
     }

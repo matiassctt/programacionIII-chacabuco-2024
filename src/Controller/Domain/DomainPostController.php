@@ -1,11 +1,10 @@
 <?php 
 
-include_once $_SERVER["DOCUMENT_ROOT"]."/src/Controller/SessionController.php";
-
 use Src\Utils\ControllerUtils;
+use Src\Middleware\AuthMiddleware;
 use Src\Service\Domain\DomainCreatorService;
 
-final readonly class DomainPostController extends SessionController {
+final readonly class DomainPostController extends AuthMiddleware {
     private DomainCreatorService $service;
 
     public function __construct() {
@@ -14,14 +13,9 @@ final readonly class DomainPostController extends SessionController {
 
     public function start(): void 
     {
-        $this->validateUser();
-        
-        $name = $_POST["name"];
-        $code = $_POST["code"];
+        $name = ControllerUtils::getPost("name");
+        $code = ControllerUtils::getPost("code");
 
         $this->service->create($name, $code);
-
-        header("Location: /domains");
-        die();
     }
 }

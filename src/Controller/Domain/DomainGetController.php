@@ -1,8 +1,7 @@
 <?php 
 
+use Src\Middleware\AuthMiddleware;
 use Src\Service\Domain\DomainFinderService;
-
-include_once $_SERVER["DOCUMENT_ROOT"]."/src/Controller/AuthMiddleware.php";
 
 final readonly class DomainGetController extends AuthMiddleware {
     private DomainFinderService $service;

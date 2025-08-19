@@ -1,5 +1,6 @@
 <?php
 
+use Src\Entity\Domain\Domain;
 use Src\Service\Domain\DomainsSearcherService;
 
 final readonly class DomainsGetController {
@@ -14,7 +15,16 @@ final readonly class DomainsGetController {
         $domains = $this->service->search();
 
         echo json_encode([
-            "results" => $domains
+            "data" => array_map($this->toResponse(), $domains),
         ]);
+    }
+
+    protected function toResponse(): Closure
+    {
+        return fn (Domain $domain): array => [
+            'id' => $domain->id(),
+            'name' => $domain->name(),
+            'code' => $domain->code(),
+        ];
     }
 }
